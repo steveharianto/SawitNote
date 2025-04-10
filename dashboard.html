@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - SawitNote</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'sawit-green': '#2E7D32',
+            'sawit-brown': '#8D6E63',
+          },
+          fontFamily: {
+            'poppins': ['Poppins', 'sans-serif'],
+          },
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-50 font-poppins min-h-screen flex flex-col">
+  <!-- Header -->
+  <header class="bg-white border-b border-gray-200 py-3 px-4 flex items-center justify-between">
+    <div class="flex items-center">
+      <img src="images/logo.png" alt="SawitNote Logo" class="h-8 mr-2">
+      <h1 class="text-sawit-green font-bold text-xl">SawitNote</h1>
+    </div>
+    <div class="text-gray-600">
+      <div class="text-sm font-medium">Ahmad Supardi</div>
+      <div class="text-xs">ID: 2023-112</div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="flex-1 p-4 md:p-6 max-w-4xl mx-auto w-full">
+    <!-- Info Card -->
+    <div class="bg-white rounded-lg shadow-md p-4 mb-6">
+      <h2 class="text-sawit-green font-medium mb-2">Ringkasan Hari Ini</h2>
+      <div class="grid grid-cols-3 gap-3 text-center">
+        <div class="bg-green-50 rounded-lg p-3">
+          <div class="text-2xl font-bold text-sawit-green">24</div>
+          <div class="text-xs text-gray-600">Total Tandan</div>
+        </div>
+        <div class="bg-green-50 rounded-lg p-3">
+          <div class="text-2xl font-bold text-sawit-green">B5</div>
+          <div class="text-xs text-gray-600">Blok Terakhir</div>
+        </div>
+        <div class="bg-green-50 rounded-lg p-3">
+          <div class="text-2xl font-bold text-sawit-green">08:45</div>
+          <div class="text-xs text-gray-600">Update Terakhir</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Actions -->
+    <div class="flex flex-col items-center gap-4 my-8">
+      <a href="input_panen.html" class="w-full max-w-sm bg-sawit-green hover:bg-green-800 text-white font-medium py-4 px-6 rounded-lg shadow-md transition duration-300 flex items-center justify-center">
+        <i class="fas fa-plus-circle mr-2"></i>
+        Catat Panen Baru
+      </a>
+      
+      <a href="riwayat.html" class="w-full max-w-sm bg-white hover:bg-gray-100 text-sawit-green border border-sawit-green font-medium py-3 px-6 rounded-lg transition duration-300 flex items-center justify-center">
+        <i class="fas fa-history mr-2"></i>
+        Lihat Riwayat Panen
+      </a>
+    </div>
+
+    <!-- Quick Status -->
+    <div class="bg-white rounded-lg shadow-md p-4 mb-4">
+      <h3 class="font-medium text-gray-700 mb-2">Status Pengangkutan Hari Ini</h3>
+      <div class="flex justify-between items-center">
+        <div>
+          <span class="inline-block w-3 h-3 rounded-full bg-yellow-500 mr-1"></span>
+          <span>8 tandan belum diangkut</span>
+        </div>
+        <div>
+          <span class="inline-block w-3 h-3 rounded-full bg-green-500 mr-1"></span>
+          <span>16 tandan sudah diangkut</span>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Bottom Navigation -->
+  <nav class="bg-white border-t border-gray-200 fixed bottom-0 w-full">
+    <div class="flex justify-around items-center py-2">
+      <a href="dashboard.html" class="flex flex-col items-center px-3 py-1 text-sawit-green">
+        <i class="fas fa-home text-lg"></i>
+        <span class="text-xs mt-1">Dashboard</span>
+      </a>
+      <a href="input_panen.html" class="flex flex-col items-center px-3 py-1 text-gray-500">
+        <i class="fas fa-plus-circle text-lg"></i>
+        <span class="text-xs mt-1">Input</span>
+      </a>
+      <a href="riwayat.html" class="flex flex-col items-center px-3 py-1 text-gray-500">
+        <i class="fas fa-history text-lg"></i>
+        <span class="text-xs mt-1">Riwayat</span>
+      </a>
+      <a href="profil.html" class="flex flex-col items-center px-3 py-1 text-gray-500">
+        <i class="fas fa-user text-lg"></i>
+        <span class="text-xs mt-1">Profil</span>
+      </a>
+    </div>
+  </nav>
+
+  <!-- Spacer for bottom navigation -->
+  <div class="h-14"></div>
+</body>
+</html>

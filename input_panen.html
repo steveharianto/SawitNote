@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Input Panen - SawitNote</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'sawit-green': '#2E7D32',
+            'sawit-brown': '#8D6E63',
+          },
+          fontFamily: {
+            'poppins': ['Poppins', 'sans-serif'],
+          },
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-50 font-poppins min-h-screen flex flex-col">
+  <!-- Header -->
+  <header class="bg-white border-b border-gray-200 py-3 px-4 flex items-center justify-between">
+    <div class="flex items-center">
+      <img src="images/logo.png" alt="SawitNote Logo" class="h-8 mr-2">
+      <h1 class="text-sawit-green font-bold text-xl">SawitNote</h1>
+    </div>
+    <div class="text-sawit-green">
+      <h2 class="font-medium">Input Data Panen</h2>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="flex-1 p-4 md:p-6 max-w-2xl mx-auto w-full">
+    <form id="panenForm" class="bg-white rounded-lg shadow-md p-5">
+      <!-- Tanggal -->
+      <div class="mb-4">
+        <label for="tanggal" class="block text-sm font-medium text-gray-700 mb-1">Tanggal</label>
+        <input type="date" id="tanggal" name="tanggal" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-sawit-green focus:border-sawit-green" required>
+      </div>
+      
+      <!-- Jumlah Tandan -->
+      <div class="mb-4">
+        <label for="jumlah_tandan" class="block text-sm font-medium text-gray-700 mb-1">Jumlah Tandan Panen</label>
+        <div class="flex">
+          <button type="button" id="decrement" class="bg-gray-200 px-3 py-2 rounded-l-md">
+            <i class="fas fa-minus"></i>
+          </button>
+          <input type="number" id="jumlah_tandan" name="jumlah_tandan" min="1" value="1" class="w-full text-center border-y border-gray-300 focus:ring-sawit-green focus:border-sawit-green" required>
+          <button type="button" id="increment" class="bg-gray-200 px-3 py-2 rounded-r-md">
+            <i class="fas fa-plus"></i>
+          </button>
+        </div>
+      </div>
+      
+      <!-- Lokasi Blok -->
+      <div class="mb-4">
+        <label for="blok" class="block text-sm font-medium text-gray-700 mb-1">Lokasi Blok Kebun</label>
+        <select id="blok" name="blok" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-sawit-green focus:border-sawit-green" required>
+          <option value="" disabled selected>Pilih lokasi blok</option>
+          <option value="A1">A1</option>
+          <option value="A2">A2</option>
+          <option value="A3">A3</option>
+          <option value="B1">B1</option>
+          <option value="B2">B2</option>
+          <option value="B3">B3</option>
+          <option value="C1">C1</option>
+          <option value="C2">C2</option>
+          <option value="C3">C3</option>
+          <!-- More options can be added -->
+        </select>
+      </div>
+      
+      <!-- Status Pengangkutan -->
+      <div class="mb-5">
+        <label class="block text-sm font-medium text-gray-700 mb-2">Status Pengangkutan</label>
+        <div class="flex gap-4">
+          <label class="inline-flex items-center">
+            <input type="radio" name="status" value="belum" class="form-radio text-sawit-green" checked>
+            <span class="ml-2">Belum Diangkut</span>
+          </label>
+          <label class="inline-flex items-center">
+            <input type="radio" name="status" value="sudah" class="form-radio text-sawit-green">
+            <span class="ml-2">Sudah Diangkut</span>
+          </label>
+        </div>
+      </div>
+      
+      <!-- Upload Foto -->
+      <div class="mb-6">
+        <label for="foto" class="block text-sm font-medium text-gray-700 mb-1">Upload Foto Bukti Panen (Opsional)</label>
+        <div class="border-2 border-dashed border-gray-300 rounded-md p-4 text-center">
+          <input type="file" id="foto" name="foto" accept="image/*" class="hidden">
+          <label for="foto" class="cursor-pointer">
+            <i class="fas fa-camera text-gray-400 text-2xl mb-2"></i>
+            <p class="text-sm text-gray-500">Klik untuk memilih foto atau gunakan kamera</p>
+          </label>
+          <div id="preview" class="mt-2 hidden">
+            <img id="image-preview" class="max-h-40 mx-auto rounded">
+          </div>
+        </div>
+      </div>
+      
+      <!-- Submit Button -->
+      <button type="submit" class="w-full bg-sawit-green hover:bg-green-800 text-white font-medium py-3 rounded-md transition duration-300 flex items-center justify-center">
+        <span>Lanjutkan</span>
+        <i class="fas fa-arrow-right ml-2"></i>
+      </button>
+    </form>
+  </main>
+
+  <!-- Bottom Navigation -->
+  <nav class="bg-white border-t border-gray-200 fixed bottom-0 w-full">
+    <div class="flex justify-around items-center py-2">
+      <a href="dashboard.html" class="flex flex-col items-center px-3 py-1 text-gray-500">
+        <i class="fas fa-home text-lg"></i>
+        <span class="text-xs mt-1">Dashboard</span>
+      </a>
+      <a href="input_panen.html" class="flex flex-col items-center px-3 py-1 text-sawit-green">
+        <i class="fas fa-plus-circle text-lg"></i>
+        <span class="text-xs mt-1">Input</span>
+      </a>
+      <a href="riwayat.html" class="flex flex-col items-center px-3 py-1 text-gray-500">
+        <i class="fas fa-history text-lg"></i>
+        <span class="text-xs mt-1">Riwayat</span>
+      </a>
+      <a href="profil.html" class="flex flex-col items-center px-3 py-1 text-gray-500">
+        <i class="fas fa-user text-lg"></i>
+        <span class="text-xs mt-1">Profil</span>
+      </a>
+    </div>
+  </nav>
+
+  <!-- Spacer for bottom navigation -->
+  <div class="h-14"></div>
+
+  <script>
+    // Set today's date as default
+    document.addEventListener('DOMContentLoaded', function() {
+      const today = new Date().toISOString().split('T')[0];
+      document.getElementById('tanggal').value = today;
+      
+      // Increment/decrement handlers
+      document.getElementById('increment').addEventListener('click', function() {
+        let input = document.getElementById('jumlah_tandan');
+        input.value = parseInt(input.value) + 1;
+      });
+      
+      document.getElementById('decrement').addEventListener('click', function() {
+        let input = document.getElementById('jumlah_tandan');
+        if (parseInt(input.value) > 1) {
+          input.value = parseInt(input.value) - 1;
+        }
+      });
+      
+      // Image preview
+      document.getElementById('foto').addEventListener('change', function(e) {
+        const preview = document.getElementById('preview');
+        const imagePreview = document.getElementById('image-preview');
+        
+        if (e.target.files.length > 0) {
+          preview.classList.remove('hidden');
+          imagePreview.src = URL.createObjectURL(e.target.files[0]);
+        } else {
+          preview.classList.add('hidden');
+        }
+      });
+      
+      // Form submission
+      document.getElementById('panenForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        // Store form data in localStorage for review page
+        const formData = {
+          tanggal: document.getElementById('tanggal').value,
+          jumlah_tandan: document.getElementById('jumlah_tandan').value,
+          blok: document.getElementById('blok').value,
+          status: document.querySelector('input[name="status"]:checked').value
+        };
+        
+        localStorage.setItem('panenData', JSON.stringify(formData));
+        window.location.href = 'review.html';
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profil - SawitNote</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'sawit-green': '#2E7D32',
+            'sawit-brown': '#8D6E63',
+          },
+          fontFamily: {
+            'poppins': ['Poppins', 'sans-serif'],
+          },
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-50 font-poppins min-h-screen flex flex-col">
+  <!-- Header -->
+  <header class="bg-white border-b border-gray-200 py-3 px-4 flex items-center justify-between">
+    <div class="flex items-center">
+      <img src="images/logo.png" alt="SawitNote Logo" class="h-8 mr-2">
+      <h1 class="text-sawit-green font-bold text-xl">SawitNote</h1>
+    </div>
+    <div class="text-sawit-green">
+      <h2 class="font-medium">Profil Saya</h2>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="flex-1 p-4 md:p-6 max-w-xl mx-auto w-full">
+    <!-- Profile Card -->
+    <div class="bg-white rounded-lg shadow-md overflow-hidden">
+      <!-- Profile Header -->
+      <div class="bg-sawit-green px-4 py-6 text-white text-center">
+        <div class="inline-flex items-center justify-center h-24 w-24 rounded-full bg-white text-sawit-green mb-3">
+          <i class="fas fa-user text-4xl"></i>
+        </div>
+        <h3 class="text-xl font-medium">Ahmad Supardi</h3>
+        <p class="text-green-100">Pemanen</p>
+      </div>
+      
+      <!-- Profile Details -->
+      <div class="p-4">
+        <div class="space-y-3">
+          <div class="flex border-b border-gray-100 py-3">
+            <div class="w-1/3 text-gray-600">
+              <i class="fas fa-id-card mr-2"></i>ID Pekerja
+            </div>
+            <div class="w-2/3 font-medium">2023-112</div>
+          </div>
+          
+          <div class="flex border-b border-gray-100 py-3">
+            <div class="w-1/3 text-gray-600">
+              <i class="fas fa-map-marker-alt mr-2"></i>Blok Utama
+            </div>
+            <div class="w-2/3 font-medium">B5, B6, C1</div>
+          </div>
+          
+          <div class="flex border-b border-gray-100 py-3">
+            <div class="w-1/3 text-gray-600">
+              <i class="fas fa-phone mr-2"></i>Kontak
+            </div>
+            <div class="w-2/3 font-medium">0812-3456-7890</div>
+          </div>
+          
+          <div class="flex border-b border-gray-100 py-3">
+            <div class="w-1/3 text-gray-600">
+              <i class="fas fa-calendar-alt mr-2"></i>Mulai Kerja
+            </div>
+            <div class="w-2/3 font-medium">12 Maret 2020</div>
+          </div>
+          
+          <div class="flex py-3">
+            <div class="w-1/3 text-gray-600">
+              <i class="fas fa-user-tie mr-2"></i>Mandor
+            </div>
+            <div class="w-2/3 font-medium">Pak Suryono</div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Performance Summary -->
+      <div class="bg-green-50 p-4 border-t border-green-100">
+        <h4 class="font-medium text-sawit-green mb-3">Kinerja Bulan Ini</h4>
+        <div class="grid grid-cols-2 gap-4">
+          <div class="bg-white p-3 rounded-lg shadow-sm text-center">
+            <div class="text-2xl font-bold text-sawit-green">453</div>
+            <div class="text-xs text-gray-600">Total Tandan</div>
+          </div>
+          <div class="bg-white p-3 rounded-lg shadow-sm text-center">
+            <div class="text-2xl font-bold text-sawit-green">21</div>
+            <div class="text-xs text-gray-600">Hari Kerja</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Action Buttons -->
+    <div class="mt-6 space-y-3">
+      <button id="btn-edit" class="w-full py-3 px-4 bg-white border border-sawit-green text-sawit-green rounded-md hover:bg-gray-50 transition duration-200 flex items-center justify-center">
+        <i class="fas fa-user-edit mr-2"></i> Edit Profil
+      </button>
+      
+      <button id="btn-change-pin" class="w-full py-3 px-4 bg-white border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition duration-200 flex items-center justify-center">
+        <i class="fas fa-lock mr-2"></i> Ubah PIN
+      </button>
+      
+      <button id="btn-logout" class="w-full py-3 px-4 bg-white border border-red-300 text-red-600 rounded-md hover:bg-red-50 transition duration-200 flex items-center justify-center">
+        <i class="fas fa-sign-out-alt mr-2"></i> Keluar
+      </button>
+    </div>
+  </main>
+
+  <!-- Logout Confirmation Modal -->
+  <div id="logout-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+    <div class="bg-white rounded-lg p-5 w-11/12 max-w-sm">
+      <div class="text-center mb-4">
+        <div class="inline-flex items-center justify-center h-12 w-12 rounded-full bg-red-100 text-red-600 mb-4">
+          <i class="fas fa-sign-out-alt text-xl"></i>
+        </div>
+        <h3 class="text-lg font-medium text-gray-900">Keluar dari SawitNote?</h3>
+        <p class="text-gray-600 mt-1">Anda yakin ingin keluar dari aplikasi?</p>
+      </div>
+      
+      <div class="flex flex-col md:flex-row gap-3">
+        <button id="btn-cancel" class="md:flex-1 py-2 px-4 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition duration-200">
+          Batal
+        </button>
+        
+        <button id="btn-confirm-logout" class="md:flex-1 py-2 px-4 bg-red-600 text-white rounded-md hover:bg-red-700 transition duration-200">
+          Ya, Keluar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Navigation -->
+  <nav class="bg-white border-t border-gray-200 fixed bottom-0 w-full">
+    <div class="flex justify-around items-center py-2">
+      <a href="dashboard.html" class="flex flex-col items-center px-3 py-1 text-gray-500">
+        <i class="fas fa-home text-lg"></i>
+        <span class="text-xs mt-1">Dashboard</span>
+      </a>
+      <a href="input_panen.html" class="flex flex-col items-center px-3 py-1 text-gray-500">
+        <i class="fas fa-plus-circle text-lg"></i>
+        <span class="text-xs mt-1">Input</span>
+      </a>
+      <a href="riwayat.html" class="flex flex-col items-center px-3 py-1 text-gray-500">
+        <i class="fas fa-history text-lg"></i>
+        <span class="text-xs mt-1">Riwayat</span>
+      </a>
+      <a href="profil.html" class="flex flex-col items-center px-3 py-1 text-sawit-green">
+        <i class="fas fa-user text-lg"></i>
+        <span class="text-xs mt-1">Profil</span>
+      </a>
+    </div>
+  </nav>
+
+  <!-- Spacer for bottom navigation -->
+  <div class="h-14"></div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Logout button functionality
+      document.getElementById('btn-logout').addEventListener('click', function() {
+        document.getElementById('logout-modal').classList.remove('hidden');
+      });
+      
+      // Cancel logout
+      document.getElementById('btn-cancel').addEventListener('click', function() {
+        document.getElementById('logout-modal').classList.add('hidden');
+      });
+      
+      // Confirm logout
+      document.getElementById('btn-confirm-logout').addEventListener('click', function() {
+        // In real app, perform logout operations
+        window.location.href = 'index.html';
+      });
+      
+      // Edit profile button (would go to edit page in a real app)
+      document.getElementById('btn-edit').addEventListener('click', function() {
+        alert('Fitur edit profil belum tersedia.');
+      });
+      
+      // Change PIN button (would open change PIN form in a real app)
+      document.getElementById('btn-change-pin').addEventListener('click', function() {
+        alert('Fitur ubah PIN belum tersedia.');
+      });
+    });
+  </script>
+</body>
+</html>

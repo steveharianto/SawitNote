@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Riwayat Panen - SawitNote</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'sawit-green': '#2E7D32',
+            'sawit-brown': '#8D6E63',
+          },
+          fontFamily: {
+            'poppins': ['Poppins', 'sans-serif'],
+          },
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-50 font-poppins min-h-screen flex flex-col">
+  <!-- Header -->
+  <header class="bg-white border-b border-gray-200 py-3 px-4 flex items-center justify-between">
+    <div class="flex items-center">
+      <img src="images/logo.png" alt="SawitNote Logo" class="h-8 mr-2">
+      <h1 class="text-sawit-green font-bold text-xl">SawitNote</h1>
+    </div>
+    <div class="text-sawit-green">
+      <h2 class="font-medium">Riwayat Panen</h2>
+    </div>
+  </header>
+
+  <!-- Filter & Search Bar -->
+  <div class="bg-white p-3 shadow-sm sticky top-0 z-10">
+    <div class="flex flex-col md:flex-row gap-2">
+      <div class="flex flex-1 items-center relative">
+        <i class="fas fa-search absolute left-3 text-gray-400"></i>
+        <input type="text" id="search-input" placeholder="Cari blok atau jumlah..." class="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-md focus:ring-sawit-green focus:border-sawit-green text-sm">
+      </div>
+      
+      <div class="flex gap-2">
+        <div class="relative">
+          <input type="date" id="date-filter" class="px-3 py-2 border border-gray-300 rounded-md focus:ring-sawit-green focus:border-sawit-green text-sm">
+        </div>
+        
+        <div class="relative">
+          <select id="blok-filter" class="appearance-none px-3 py-2 border border-gray-300 rounded-md focus:ring-sawit-green focus:border-sawit-green text-sm pr-8">
+            <option value="">Semua Blok</option>
+            <option value="A1">A1</option>
+            <option value="A2">A2</option>
+            <option value="B1">B1</option>
+            <option value="B2">B2</option>
+            <option value="C1">C1</option>
+            <option value="C2">C2</option>
+          </select>
+          <i class="fas fa-chevron-down absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <main class="flex-1 p-4 max-w-3xl mx-auto w-full">
+    <!-- Grouped by Date Section -->
+    <div class="mb-6">
+      <h3 class="flex items-center text-gray-500 text-sm font-medium mb-3">
+        <i class="fas fa-calendar-day mr-2"></i>
+        <span>Hari Ini, 15 Agustus 2023</span>
+      </h3>
+      
+      <!-- History Cards -->
+      <div class="space-y-3">
+        <div class="bg-white rounded-lg shadow-sm p-3 hover:shadow-md transition-shadow cursor-pointer" onclick="showDetail('1')">
+          <div class="flex justify-between items-center">
+            <div>
+              <div class="font-medium">Blok B2</div>
+              <div class="text-sm text-gray-500">08:45 WIB</div>
+            </div>
+            <div class="flex items-center">
+              <div class="mr-3 text-right">
+                <div class="font-bold text-sawit-green">15</div>
+                <div class="text-xs text-gray-500">Tandan</div>
+              </div>
+              <div class="bg-green-100 px-2 py-1 rounded-full text-xs text-green-800">
+                Sudah Diangkut
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="bg-white rounded-lg shadow-sm p-3 hover:shadow-md transition-shadow cursor-pointer" onclick="showDetail('2')">
+          <div class="flex justify-between items-center">
+            <div>
+              <div class="font-medium">Blok A3</div>
+              <div class="text-sm text-gray-500">07:15 WIB</div>
+            </div>
+            <div class="flex items-center">
+              <div class="mr-3 text-right">
+                <div class="font-bold text-sawit-green">9</div>
+                <div class="text-xs text-gray-500">Tandan</div>
+              </div>
+              <div class="bg-yellow-100 px-2 py-1 rounded-full text-xs text-yellow-800">
+                Belum Diangkut
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Previous Day -->
+    <div class="mb-6">
+      <h3 class="flex items-center text-gray-500 text-sm font-medium mb-3">
+        <i class="fas fa-calendar-day mr-2"></i>
+        <span>Kemarin, 14 Agustus 2023</span>
+      </h3>
+      
+      <!-- History Cards -->
+      <div class="space-y-3">
+        <div class="bg-white rounded-lg shadow-sm p-3 hover:shadow-md transition-shadow cursor-pointer" onclick="showDetail('3')">
+          <div class="flex justify-between items-center">
+            <div>
+              <div class="font-medium">Blok C1</div>
+              <div class="text-sm text-gray-500">16:30 WIB</div>
+            </div>
+            <div class="flex items-center">
+              <div class="mr-3 text-right">
+                <div class="font-bold text-sawit-green">22</div>
+                <div class="text-xs text-gray-500">Tandan</div>
+              </div>
+              <div class="bg-green-100 px-2 py-1 rounded-full text-xs text-green-800">
+                Sudah Diangkut
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="bg-white rounded-lg shadow-sm p-3 hover:shadow-md transition-shadow cursor-pointer" onclick="showDetail('4')">
+          <div class="flex justify-between items-center">
+            <div>
+              <div class="font-medium">Blok B5</div>
+              <div class="text-sm text-gray-500">14:20 WIB</div>
+            </div>
+            <div class="flex items-center">
+              <div class="mr-3 text-right">
+                <div class="font-bold text-sawit-green">18</div>
+                <div class="text-xs text-gray-500">Tandan</div>
+              </div>
+              <div class="bg-green-100 px-2 py-1 rounded-full text-xs text-green-800">
+                Sudah Diangkut
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  
+  <!-- Detail Modal -->
+  <div id="detail-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+    <div class="bg-white rounded-lg p-5 w-11/12 max-w-md">
+      <div class="flex justify-between items-center mb-4">
+        <h3 class="text-lg font-medium">Detail Panen</h3>
+        <button onclick="closeDetail()" class="text-gray-500 hover:text-gray-700">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      
+      <div class="space-y-3 mb-5">
+        <div class="flex justify-between p-2 border-b border-gray-100">
+          <span class="text-gray-600">Tanggal:</span>
+          <span class="font-medium text-gray-800" id="detail-tanggal">15 Agustus 2023</span>
+        </div>
+        
+        <div class="flex justify-between p-2 border-b border-gray-100">
+          <span class="text-gray-600">Waktu:</span>
+          <span class="font-medium text-gray-800" id="detail-waktu">08:45 WIB</span>
+        </div>
+        
+        <div class="flex justify-between p-2 border-b border-gray-100">
+          <span class="text-gray-600">Blok:</span>
+          <span class="font-medium text-gray-800" id="detail-blok">B2</span>
+        </div>
+        
+        <div class="flex justify-between p-2 border-b border-gray-100">
+          <span class="text-gray-600">Jumlah Tandan:</span>
+          <span class="font-medium text-gray-800" id="detail-jumlah">15</span>
+        </div>
+        
+        <div class="flex justify-between p-2 border-b border-gray-100">
+          <span class="text-gray-600">Status:</span>
+          <span id="detail-status" class="px-2 py-1 rounded-full bg-green-100 text-green-800 text-sm">Sudah Diangkut</span>
+        </div>
+        
+        <div id="detail-foto-container" class="pt-2">
+          <div class="text-gray-600 mb-2">Foto Bukti:</div>
+          <img id="detail-foto" src="https://via.placeholder.com/300x200" class="w-full rounded-md" alt="Foto bukti panen">
+        </div>
+      </div>
+      
+      <button onclick="closeDetail()" class="w-full py-2 bg-sawit-green text-white rounded-md hover:bg-green-800 transition duration-200">
+        Tutup
+      </button>
+    </div>
+  </div>
+
+  <!-- Bottom Navigation -->
+  <nav class="bg-white border-t border-gray-200 fixed bottom-0 w-full">
+    <div class="flex justify-around items-center py-2">
+      <a href="dashboard.html" class="flex flex-col items-center px-3 py-1 text-gray-500">
+        <i class="fas fa-home text-lg"></i>
+        <span class="text-xs mt-1">Dashboard</span>
+      </a>
+      <a href="input_panen.html" class="flex flex-col items-center px-3 py-1 text-gray-500">
+        <i class="fas fa-plus-circle text-lg"></i>
+        <span class="text-xs mt-1">Input</span>
+      </a>
+      <a href="riwayat.html" class="flex flex-col items-center px-3 py-1 text-sawit-green">
+        <i class="fas fa-history text-lg"></i>
+        <span class="text-xs mt-1">Riwayat</span>
+      </a>
+      <a href="profil.html" class="flex flex-col items-center px-3 py-1 text-gray-500">
+        <i class="fas fa-user text-lg"></i>
+        <span class="text-xs mt-1">Profil</span>
+      </a>
+    </div>
+  </nav>
+
+  <!-- Spacer for bottom navigation -->
+  <div class="h-14"></div>
+
+  <script>
+    // Sample data - in a real app, this would come from a database
+    const historyData = {
+      '1': {
+        tanggal: '15 Agustus 2023',
+        waktu: '08:45 WIB',
+        blok: 'B2',
+        jumlah: 15,
+        status: 'Sudah Diangkut',
+        statusClass: 'bg-green-100 text-green-800',
+        foto: 'https://via.placeholder.com/300x200'
+      },
+      '2': {
+        tanggal: '15 Agustus 2023',
+        waktu: '07:15 WIB',
+        blok: 'A3',
+        jumlah: 9,
+        status: 'Belum Diangkut',
+        statusClass: 'bg-yellow-100 text-yellow-800',
+        foto: null
+      },
+      '3': {
+        tanggal: '14 Agustus 2023',
+        waktu: '16:30 WIB',
+        blok: 'C1',
+        jumlah: 22,
+        status: 'Sudah Diangkut',
+        statusClass: 'bg-green-100 text-green-800',
+        foto: 'https://via.placeholder.com/300x200'
+      },
+      '4': {
+        tanggal: '14 Agustus 2023',
+        waktu: '14:20 WIB',
+        blok: 'B5',
+        jumlah: 18,
+        status: 'Sudah Diangkut',
+        statusClass: 'bg-green-100 text-green-800',
+        foto: 'https://via.placeholder.com/300x200'
+      }
+    };
+    
+    function showDetail(id) {
+      const data = historyData[id];
+      if (!data) return;
+      
+      // Populate the modal with data
+      document.getElementById('detail-tanggal').textContent = data.tanggal;
+      document.getElementById('detail-waktu').textContent = data.waktu;
+      document.getElementById('detail-blok').textContent = data.blok;
+      document.getElementById('detail-jumlah').textContent = data.jumlah;
+      
+      const statusElement = document.getElementById('detail-status');
+      statusElement.textContent = data.status;
+      statusElement.className = `px-2 py-1 rounded-full ${data.statusClass} text-sm`;
+      
+      // Handle photo
+      const fotoContainer = document.getElementById('detail-foto-container');
+      if (data.foto) {
+        fotoContainer.classList.remove('hidden');
+        document.getElementById('detail-foto').src = data.foto;
+      } else {
+        fotoContainer.classList.add('hidden');
+      }
+      
+      // Show modal
+      document.getElementById('detail-modal').classList.remove('hidden');
+    }
+    
+    function closeDetail() {
+      document.getElementById('detail-modal').classList.add('hidden');
+    }
+    
+    // Search and filter functionality
+    document.addEventListener('DOMContentLoaded', function() {
+      const searchInput = document.getElementById('search-input');
+      const dateFilter = document.getElementById('date-filter');
+      const blokFilter = document.getElementById('blok-filter');
+      
+      // Add event listeners for the filters
+      searchInput.addEventListener('input', applyFilters);
+      dateFilter.addEventListener('change', applyFilters);
+      blokFilter.addEventListener('change', applyFilters);
+      
+      function applyFilters() {
+        // In a real app, this would filter the actual data
+        console.log('Filtering with:', {
+          search: searchInput.value,
+          date: dateFilter.value,
+          blok: blokFilter.value
+        });
+        
+        // For demo purposes, just log the filter values
+        // Real implementation would involve API calls or filtering local data
+      }
+    });
+  </script>
+</body>
+</html>
