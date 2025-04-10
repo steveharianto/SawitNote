@@ -235,48 +235,126 @@
   <div class="h-14"></div>
 
   <script>
-    // Sample data - in a real app, this would come from a database
-    const historyData = {
-      '1': {
-        tanggal: '15 Agustus 2023',
-        waktu: '08:45 WIB',
-        blok: 'B2',
-        jumlah: 15,
-        status: 'Sudah Diangkut',
-        statusClass: 'bg-green-100 text-green-800',
-        foto: 'https://via.placeholder.com/300x200'
-      },
-      '2': {
-        tanggal: '15 Agustus 2023',
-        waktu: '07:15 WIB',
-        blok: 'A3',
-        jumlah: 9,
-        status: 'Belum Diangkut',
-        statusClass: 'bg-yellow-100 text-yellow-800',
-        foto: null
-      },
-      '3': {
-        tanggal: '14 Agustus 2023',
-        waktu: '16:30 WIB',
-        blok: 'C1',
-        jumlah: 22,
-        status: 'Sudah Diangkut',
-        statusClass: 'bg-green-100 text-green-800',
-        foto: 'https://via.placeholder.com/300x200'
-      },
-      '4': {
-        tanggal: '14 Agustus 2023',
-        waktu: '14:20 WIB',
-        blok: 'B5',
-        jumlah: 18,
-        status: 'Sudah Diangkut',
-        statusClass: 'bg-green-100 text-green-800',
-        foto: 'https://via.placeholder.com/300x200'
+    document.addEventListener('DOMContentLoaded', function() {
+      // Check if user is logged in
+      const userData = JSON.parse(localStorage.getItem('sawit_user'));
+      if (!userData) {
+        window.location.href = 'index.html'; // Redirect to login if not logged in
+        return;
       }
-    };
+      
+      // Get harvests from localStorage
+      const harvests = JSON.parse(localStorage.getItem('sawit_harvests') || '[]');
+      
+      // Group by date
+      const harvestsByDate = {};
+      harvests.forEach(harvest => {
+        if (!harvestsByDate[harvest.date]) {
+          harvestsByDate[harvest.date] = [];
+        }
+        harvestsByDate[harvest.date].push(harvest);
+      });
+      
+      // Sort dates (newest first)
+      const sortedDates = Object.keys(harvestsByDate).sort().reverse();
+      
+      // Build HTML
+      const mainContent = document.querySelector('main');
+      mainContent.innerHTML = ''; // Clear existing content
+      
+      // Format date helper function
+      function formatDate(dateStr) {
+        const today = new Date().toISOString().split('T')[0];
+        const yesterday = new Date();
+        yesterday.setDate(yesterday.getDate() - 1);
+        const yesterdayStr = yesterday.toISOString().split('T')[0];
+        
+        if (dateStr === today) {
+          return 'Hari Ini, ' + new Date(dateStr).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+        } else if (dateStr === yesterdayStr) {
+          return 'Kemarin, ' + new Date(dateStr).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+        } else {
+          return new Date(dateStr).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+        }
+      }
+      
+      // Build content for each date
+      sortedDates.forEach(date => {
+        const dateHarvests = harvestsByDate[date];
+        
+        const dateSection = document.createElement('div');
+        dateSection.className = 'mb-6';
+        dateSection.innerHTML = `
+          <h3 class="flex items-center text-gray-500 text-sm font-medium mb-3">
+            <i class="fas fa-calendar-day mr-2"></i>
+            <span>${formatDate(date)}</span>
+          </h3>
+          <div class="space-y-3 harvest-cards" data-date="${date}"></div>
+        `;
+        
+        mainContent.appendChild(dateSection);
+        
+        const cardsContainer = dateSection.querySelector('.harvest-cards');
+        
+        // Add harvests for this date
+        dateHarvests.forEach(harvest => {
+          const statusClass = harvest.status === 'sudah' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800';
+          const statusText = harvest.status === 'sudah' ? 'Sudah Diangkut' : 'Belum Diangkut';
+          
+          const card = document.createElement('div');
+          card.className = 'bg-white rounded-lg shadow-sm p-3 hover:shadow-md transition-shadow cursor-pointer';
+          card.setAttribute('onclick', `showDetail('${harvest.id}')`);
+          card.innerHTML = `
+            <div class="flex justify-between items-center">
+              <div>
+                <div class="font-medium">Blok ${harvest.block}</div>
+                <div class="text-sm text-gray-500">${harvest.time} WIB</div>
+              </div>
+              <div class="flex items-center">
+                <div class="mr-3 text-right">
+                  <div class="font-bold text-sawit-green">${harvest.bunches}</div>
+                  <div class="text-xs text-gray-500">Tandan</div>
+                </div>
+                <div class="${statusClass} px-2 py-1 rounded-full text-xs">
+                  ${statusText}
+                </div>
+              </div>
+            </div>
+          `;
+          
+          cardsContainer.appendChild(card);
+        });
+      });
+      
+      // Set up filters
+      const searchInput = document.getElementById('search-input');
+      const dateFilter = document.getElementById('date-filter');
+      const blokFilter = document.getElementById('blok-filter');
+      
+      // Add event listeners for the filters
+      searchInput.addEventListener('input', applyFilters);
+      dateFilter.addEventListener('change', applyFilters);
+      blokFilter.addEventListener('change', applyFilters);
+      
+      // Create global historyData object for detail view
+      window.historyData = {};
+      
+      // Populate historyData from localStorage
+      harvests.forEach(harvest => {
+        window.historyData[harvest.id] = {
+          tanggal: new Date(harvest.date).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }),
+          waktu: harvest.time + ' WIB',
+          blok: harvest.block,
+          jumlah: harvest.bunches,
+          status: harvest.status === 'sudah' ? 'Sudah Diangkut' : 'Belum Diangkut',
+          statusClass: harvest.status === 'sudah' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800',
+          foto: harvest.imageUrl
+        };
+      });
+    });
     
     function showDetail(id) {
-      const data = historyData[id];
+      const data = window.historyData[id];
       if (!data) return;
       
       // Populate the modal with data
@@ -306,29 +384,62 @@
       document.getElementById('detail-modal').classList.add('hidden');
     }
     
-    // Search and filter functionality
-    document.addEventListener('DOMContentLoaded', function() {
-      const searchInput = document.getElementById('search-input');
-      const dateFilter = document.getElementById('date-filter');
-      const blokFilter = document.getElementById('blok-filter');
+    function applyFilters() {
+      const searchTerm = document.getElementById('search-input').value.toLowerCase();
+      const dateValue = document.getElementById('date-filter').value;
+      const blokValue = document.getElementById('blok-filter').value;
       
-      // Add event listeners for the filters
-      searchInput.addEventListener('input', applyFilters);
-      dateFilter.addEventListener('change', applyFilters);
-      blokFilter.addEventListener('change', applyFilters);
+      // Get harvests from localStorage
+      const harvests = JSON.parse(localStorage.getItem('sawit_harvests') || '[]');
       
-      function applyFilters() {
-        // In a real app, this would filter the actual data
-        console.log('Filtering with:', {
-          search: searchInput.value,
-          date: dateFilter.value,
-          blok: blokFilter.value
-        });
+      // Apply filters
+      const filteredHarvests = harvests.filter(harvest => {
+        // Search filter
+        const matchesSearch = searchTerm === '' || 
+                             harvest.block.toLowerCase().includes(searchTerm) || 
+                             harvest.bunches.toString().includes(searchTerm);
         
-        // For demo purposes, just log the filter values
-        // Real implementation would involve API calls or filtering local data
+        // Date filter
+        const matchesDate = dateValue === '' || harvest.date === dateValue;
+        
+        // Blok filter
+        const matchesBlok = blokValue === '' || harvest.block === blokValue;
+        
+        return matchesSearch && matchesDate && matchesBlok;
+      });
+      
+      // Display message if no results
+      if (filteredHarvests.length === 0) {
+        document.querySelector('main').innerHTML = `
+          <div class="text-center p-8 text-gray-500">
+            <i class="fas fa-search mb-3 text-3xl"></i>
+            <p>Tidak ada data yang sesuai dengan filter.</p>
+          </div>
+        `;
+        return;
       }
-    });
+      
+      // Group by date
+      const harvestsByDate = {};
+      filteredHarvests.forEach(harvest => {
+        if (!harvestsByDate[harvest.date]) {
+          harvestsByDate[harvest.date] = [];
+        }
+        harvestsByDate[harvest.date].push(harvest);
+      });
+      
+      // Hide/show sections based on filter
+      const allSections = document.querySelectorAll('main > div');
+      allSections.forEach(section => {
+        section.classList.add('hidden');
+      });
+      
+      // Show only matching sections and cards
+      Object.keys(harvestsByDate).forEach(date => {
+        const section = document.querySelector(`[data-date="${date}"]`).parentNode;
+        section.classList.remove('hidden');
+      });
+    }
   </script>
 </body>
 </html>

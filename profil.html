@@ -104,16 +104,8 @@
       </div>
     </div>
     
-    <!-- Action Buttons -->
-    <div class="mt-6 space-y-3">
-      <button id="btn-edit" class="w-full py-3 px-4 bg-white border border-sawit-green text-sawit-green rounded-md hover:bg-gray-50 transition duration-200 flex items-center justify-center">
-        <i class="fas fa-user-edit mr-2"></i> Edit Profil
-      </button>
-      
-      <button id="btn-change-pin" class="w-full py-3 px-4 bg-white border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition duration-200 flex items-center justify-center">
-        <i class="fas fa-lock mr-2"></i> Ubah PIN
-      </button>
-      
+    <!-- Action Buttons - Only Logout button now -->
+    <div class="mt-6">
       <button id="btn-logout" class="w-full py-3 px-4 bg-white border border-red-300 text-red-600 rounded-md hover:bg-red-50 transition duration-200 flex items-center justify-center">
         <i class="fas fa-sign-out-alt mr-2"></i> Keluar
       </button>
@@ -169,33 +161,77 @@
   <div class="h-14"></div>
 
   <script>
+    // Make sure the DOM is fully loaded before attaching events
     document.addEventListener('DOMContentLoaded', function() {
-      // Logout button functionality
-      document.getElementById('btn-logout').addEventListener('click', function() {
-        document.getElementById('logout-modal').classList.remove('hidden');
-      });
+      console.log("DOM fully loaded");
       
-      // Cancel logout
-      document.getElementById('btn-cancel').addEventListener('click', function() {
-        document.getElementById('logout-modal').classList.add('hidden');
-      });
+      // Check if user is logged in
+      const userData = JSON.parse(localStorage.getItem('sawit_user'));
+      if (!userData) {
+        window.location.href = 'index.html'; // Redirect to login if not logged in
+        return;
+      }
       
-      // Confirm logout
-      document.getElementById('btn-confirm-logout').addEventListener('click', function() {
-        // In real app, perform logout operations
-        window.location.href = 'index.html';
-      });
+      // Populate profile with user data
+      document.querySelector('.bg-sawit-green h3').textContent = userData.name;
+      document.querySelector('.bg-sawit-green p').textContent = userData.role;
       
-      // Edit profile button (would go to edit page in a real app)
-      document.getElementById('btn-edit').addEventListener('click', function() {
-        alert('Fitur edit profil belum tersedia.');
-      });
+      document.querySelectorAll('.w-2/3.font-medium')[0].textContent = userData.id;
+      document.querySelectorAll('.w-2/3.font-medium')[1].textContent = userData.blocks.join(', ');
+      document.querySelectorAll('.w-2/3.font-medium')[2].textContent = userData.phone;
+      document.querySelectorAll('.w-2/3.font-medium')[3].textContent = userData.startDate;
+      document.querySelectorAll('.w-2/3.font-medium')[4].textContent = userData.supervisor;
       
-      // Change PIN button (would open change PIN form in a real app)
-      document.getElementById('btn-change-pin').addEventListener('click', function() {
-        alert('Fitur ubah PIN belum tersedia.');
-      });
+      // Populate stats
+      document.querySelectorAll('.bg-white .text-2xl')[0].textContent = userData.stats.totalBunches;
+      document.querySelectorAll('.bg-white .text-2xl')[1].textContent = userData.stats.workDays;
+      
+      // Add direct click handlers for all buttons
+      setupLogoutFunctionality();
     });
+
+    function setupLogoutFunctionality() {
+      console.log("Setting up logout functionality");
+      
+      // Logout button
+      const logoutBtn = document.getElementById('btn-logout');
+      console.log("Logout button:", logoutBtn);
+      
+      if (logoutBtn) {
+        logoutBtn.onclick = function() {
+          console.log("Logout button clicked");
+          document.getElementById('logout-modal').classList.remove('hidden');
+        };
+      }
+      
+      // Cancel button
+      const cancelBtn = document.getElementById('btn-cancel');
+      if (cancelBtn) {
+        cancelBtn.onclick = function() {
+          console.log("Cancel button clicked");
+          document.getElementById('logout-modal').classList.add('hidden');
+        };
+      }
+      
+      // Confirm logout button
+      const confirmBtn = document.getElementById('btn-confirm-logout');
+      if (confirmBtn) {
+        confirmBtn.onclick = function() {
+          console.log("Confirm logout clicked");
+          // Clear user data
+          localStorage.removeItem('sawit_user');
+          
+          // Force the navigation
+          document.location.href = 'index.html';
+        };
+      }
+    }
+
+    // Backup direct binding in case DOMContentLoaded doesn't trigger correctly
+    window.onload = function() {
+      console.log("Window loaded");
+      setupLogoutFunctionality();
+    };
   </script>
 </body>
 </html>

@@ -110,5 +110,42 @@
 
   <!-- Spacer for bottom navigation -->
   <div class="h-14"></div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Check if user is logged in
+      const userData = JSON.parse(localStorage.getItem('sawit_user'));
+      if (!userData) {
+        window.location.href = 'index.html'; // Redirect to login if not logged in
+        return;
+      }
+      
+      // Display user info in header
+      document.querySelector('.text-gray-600 .text-sm').textContent = userData.name;
+      document.querySelector('.text-gray-600 .text-xs').textContent = 'ID: ' + userData.id;
+      
+      // Get harvests for today
+      const harvests = JSON.parse(localStorage.getItem('sawit_harvests') || '[]');
+      const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD format
+      const todayHarvests = harvests.filter(h => h.date === today);
+      
+      // Calculate summary
+      const totalBunches = todayHarvests.reduce((sum, h) => sum + parseInt(h.bunches), 0);
+      const lastBlock = todayHarvests.length > 0 ? todayHarvests[0].block : '-';
+      const lastTime = todayHarvests.length > 0 ? todayHarvests[0].time : '--:--';
+      
+      // Update summary cards
+      document.querySelectorAll('.bg-green-50 .text-2xl')[0].textContent = totalBunches || 0;
+      document.querySelectorAll('.bg-green-50 .text-2xl')[1].textContent = lastBlock;
+      document.querySelectorAll('.bg-green-50 .text-2xl')[2].textContent = lastTime;
+      
+      // Update transport status
+      const pendingBunches = todayHarvests.filter(h => h.status === 'belum').reduce((sum, h) => sum + parseInt(h.bunches), 0);
+      const shippedBunches = todayHarvests.filter(h => h.status === 'sudah').reduce((sum, h) => sum + parseInt(h.bunches), 0);
+      
+      document.querySelector('.quick-status .flex div:first-child span:last-child').textContent = pendingBunches + ' tandan belum diangkut';
+      document.querySelector('.quick-status .flex div:last-child span:last-child').textContent = shippedBunches + ' tandan sudah diangkut';
+    });
+  </script>
 </body>
 </html>

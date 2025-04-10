@@ -47,9 +47,88 @@
         Masuk
       </button>
     </form>
+    
+    <!-- Add Register Link -->
+    <div class="mt-4 text-center">
+      <p class="text-gray-600 text-sm">
+        Belum punya akun? 
+        <a href="register.html" class="text-sawit-green hover:underline">Daftar Sekarang</a>
+      </p>
+    </div>
   </div>
 
   <script>
+    // Sample user data (used only if no users exist in localStorage)
+    const sampleUserData = {
+      id: '2023-112',
+      name: 'Ahmad Supardi',
+      role: 'Pemanen',
+      blocks: ['B5', 'B6', 'C1'],
+      phone: '0812-3456-7890',
+      startDate: '12 Maret 2020',
+      supervisor: 'Pak Suryono',
+      pin: '1234',
+      stats: {
+        totalBunches: 453,
+        workDays: 21
+      }
+    };
+
+    // Sample harvest data
+    const harvestData = [
+      {
+        id: 1,
+        date: '2023-08-15',
+        time: '08:45',
+        block: 'B2', 
+        bunches: 15,
+        status: 'sudah',
+        imageUrl: 'https://via.placeholder.com/300x200'
+      },
+      {
+        id: 2,
+        date: '2023-08-15',
+        time: '07:15',
+        block: 'A3',
+        bunches: 9,
+        status: 'belum',
+        imageUrl: null
+      },
+      {
+        id: 3,
+        date: '2023-08-14',
+        time: '16:30',
+        block: 'C1',
+        bunches: 22,
+        status: 'sudah',
+        imageUrl: 'https://via.placeholder.com/300x200'
+      },
+      {
+        id: 4,
+        date: '2023-08-14',
+        time: '14:20',
+        block: 'B5',
+        bunches: 18,
+        status: 'sudah',
+        imageUrl: 'https://via.placeholder.com/300x200'
+      }
+    ];
+
+    // Initialize the system with sample data if no users exist
+    document.addEventListener('DOMContentLoaded', function() {
+      // Check if users array exists in localStorage
+      if (!localStorage.getItem('sawit_users')) {
+        // Create users array with sample user
+        const users = [sampleUserData];
+        localStorage.setItem('sawit_users', JSON.stringify(users));
+      }
+      
+      // Initialize harvest data if it doesn't exist
+      if (!localStorage.getItem('sawit_harvests')) {
+        localStorage.setItem('sawit_harvests', JSON.stringify(harvestData));
+      }
+    });
+
     document.querySelector('form').addEventListener('submit', function(e) {
       e.preventDefault();
       const nomorPekerja = document.getElementById('nomor_pekerja').value;
@@ -58,10 +137,26 @@
       if (!nomorPekerja || !pin) {
         document.getElementById('error-message').innerText = 'Nomor pekerja dan PIN harus diisi';
         document.getElementById('error-message').classList.remove('hidden');
-      } else {
-        // Redirect ke dashboard (simulasi login sukses)
-        window.location.href = 'dashboard.html';
+        return;
       }
+      
+      // Get users from localStorage
+      const users = JSON.parse(localStorage.getItem('sawit_users') || '[]');
+      
+      // Find user with matching ID and PIN
+      const user = users.find(u => u.id === nomorPekerja && u.pin === pin);
+      
+      if (!user) {
+        document.getElementById('error-message').innerText = 'Nomor pekerja atau PIN salah';
+        document.getElementById('error-message').classList.remove('hidden');
+        return;
+      }
+      
+      // Login successful - store user data in localStorage
+      localStorage.setItem('sawit_user', JSON.stringify(user));
+      
+      // Redirect to dashboard
+      window.location.href = 'dashboard.html';
     });
   </script>
 </body>

@@ -134,6 +134,13 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', function() {
+      // Check if user is logged in
+      const userData = JSON.parse(localStorage.getItem('sawit_user'));
+      if (!userData) {
+        window.location.href = 'index.html'; // Redirect to login if not logged in
+        return;
+      }
+      
       // Get data from localStorage
       const panenData = JSON.parse(localStorage.getItem('panenData') || '{}');
       
@@ -157,10 +164,9 @@
       }
       
       // Display photo if available
-      const storedImage = localStorage.getItem('panenFoto');
-      if (storedImage) {
+      if (panenData.foto) {
         document.getElementById('foto-container').classList.remove('hidden');
-        document.getElementById('review-foto').src = storedImage;
+        document.getElementById('review-foto').src = panenData.foto;
       }
       
       // Handle button clicks
@@ -169,11 +175,28 @@
       });
       
       document.getElementById('btn-save').addEventListener('click', function() {
+        // Save to harvest collection
+        const harvests = JSON.parse(localStorage.getItem('sawit_harvests') || '[]');
+        
+        // Create new entry
+        const newHarvest = {
+          id: Date.now(), // Use timestamp as ID
+          date: panenData.tanggal,
+          time: panenData.waktu,
+          block: panenData.blok,
+          bunches: parseInt(panenData.jumlah_tandan),
+          status: panenData.status,
+          imageUrl: panenData.foto || null
+        };
+        
+        // Add to beginning of array (most recent first)
+        harvests.unshift(newHarvest);
+        
+        // Save back to localStorage
+        localStorage.setItem('sawit_harvests', JSON.stringify(harvests));
+        
         // Show success modal
         document.getElementById('success-modal').classList.remove('hidden');
-        
-        // In a real app, we would send data to server here
-        // ...
       });
       
       document.getElementById('btn-continue').addEventListener('click', function() {

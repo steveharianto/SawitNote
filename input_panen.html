@@ -142,6 +142,13 @@
   <script>
     // Set today's date as default
     document.addEventListener('DOMContentLoaded', function() {
+      // Check if user is logged in
+      const userData = JSON.parse(localStorage.getItem('sawit_user'));
+      if (!userData) {
+        window.location.href = 'index.html'; // Redirect to login if not logged in
+        return;
+      }
+      
       const today = new Date().toISOString().split('T')[0];
       document.getElementById('tanggal').value = today;
       
@@ -158,28 +165,40 @@
         }
       });
       
-      // Image preview
+      // Image preview and storage
       document.getElementById('foto').addEventListener('change', function(e) {
         const preview = document.getElementById('preview');
         const imagePreview = document.getElementById('image-preview');
         
         if (e.target.files.length > 0) {
           preview.classList.remove('hidden');
-          imagePreview.src = URL.createObjectURL(e.target.files[0]);
+          const imageUrl = URL.createObjectURL(e.target.files[0]);
+          imagePreview.src = imageUrl;
+          localStorage.setItem('panenFoto', imageUrl);
         } else {
           preview.classList.add('hidden');
+          localStorage.removeItem('panenFoto');
         }
       });
       
       // Form submission
       document.getElementById('panenForm').addEventListener('submit', function(e) {
         e.preventDefault();
+        
+        // Get current time
+        const now = new Date();
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        const currentTime = `${hours}:${minutes}`;
+        
         // Store form data in localStorage for review page
         const formData = {
           tanggal: document.getElementById('tanggal').value,
           jumlah_tandan: document.getElementById('jumlah_tandan').value,
           blok: document.getElementById('blok').value,
-          status: document.querySelector('input[name="status"]:checked').value
+          status: document.querySelector('input[name="status"]:checked').value,
+          waktu: currentTime,
+          foto: localStorage.getItem('panenFoto')
         };
         
         localStorage.setItem('panenData', JSON.stringify(formData));
