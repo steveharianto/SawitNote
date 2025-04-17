@@ -22,6 +22,10 @@
   </script>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* Simple style to hide elements */
+    .hidden { display: none; }
+  </style>
 </head>
 <body class="bg-gray-50 font-poppins min-h-screen flex flex-col">
   <!-- Header -->
@@ -44,70 +48,95 @@
         <div class="inline-flex items-center justify-center h-24 w-24 rounded-full bg-white text-sawit-green mb-3">
           <i class="fas fa-user text-4xl"></i>
         </div>
-        <h3 class="text-xl font-medium">Ahmad Supardi</h3>
-        <p class="text-green-100">Pemanen</p>
+        <!-- Editable Name -->
+        <h3 id="profile-name-view" class="text-xl font-medium">Ahmad Supardi</h3>
+        <input type="text" id="profile-name-edit" class="hidden w-3/4 mx-auto text-center text-xl font-medium bg-green-700 text-white rounded px-2 py-1 border border-green-500" placeholder="Nama Lengkap">
+        
+        <p id="profile-role-view" class="text-green-100">Pemanen</p>
+        <!-- Role is likely not editable by user -->
       </div>
       
       <!-- Profile Details -->
       <div class="p-4">
         <div class="space-y-3">
+          <!-- ID Pekerja (Not Editable) -->
           <div class="flex border-b border-gray-100 py-3">
             <div class="w-1/3 text-gray-600">
               <i class="fas fa-id-card mr-2"></i>ID Pekerja
             </div>
-            <div class="w-2/3 font-medium">2023-112</div>
+            <div id="profile-id" class="w-2/3 font-medium">2023-112</div>
           </div>
           
+          <!-- Blok Utama (Editable) -->
           <div class="flex border-b border-gray-100 py-3">
             <div class="w-1/3 text-gray-600">
               <i class="fas fa-map-marker-alt mr-2"></i>Blok Utama
             </div>
-            <div class="w-2/3 font-medium">B5, B6, C1</div>
+            <div id="profile-blocks-view" class="w-2/3 font-medium">B5, B6, C1</div>
+            <div id="profile-blocks-edit" class="hidden w-2/3 flex gap-2 flex-wrap">
+              <!-- Checkboxes will be populated by JS -->
+            </div>
           </div>
           
+          <!-- Kontak (Editable) -->
           <div class="flex border-b border-gray-100 py-3">
             <div class="w-1/3 text-gray-600">
               <i class="fas fa-phone mr-2"></i>Kontak
             </div>
-            <div class="w-2/3 font-medium">0812-3456-7890</div>
+            <div id="profile-phone-view" class="w-2/3 font-medium">0812-3456-7890</div>
+            <input type="tel" id="profile-phone-edit" class="hidden w-2/3 font-medium border border-gray-300 rounded px-2 py-1" placeholder="Nomor Kontak">
           </div>
           
+          <!-- Mulai Kerja (Not Editable) -->
           <div class="flex border-b border-gray-100 py-3">
             <div class="w-1/3 text-gray-600">
               <i class="fas fa-calendar-alt mr-2"></i>Mulai Kerja
             </div>
-            <div class="w-2/3 font-medium">12 Maret 2020</div>
+            <div id="profile-startdate" class="w-2/3 font-medium">12 Maret 2020</div>
           </div>
           
+          <!-- Mandor (Editable) -->
           <div class="flex py-3">
             <div class="w-1/3 text-gray-600">
               <i class="fas fa-user-tie mr-2"></i>Mandor
             </div>
-            <div class="w-2/3 font-medium">Pak Suryono</div>
+            <div id="profile-supervisor-view" class="w-2/3 font-medium">Pak Suryono</div>
+            <input type="text" id="profile-supervisor-edit" class="hidden w-2/3 font-medium border border-gray-300 rounded px-2 py-1" placeholder="Nama Mandor">
           </div>
         </div>
       </div>
       
-      <!-- Performance Summary -->
+      <!-- Performance Summary (Not Editable) -->
       <div class="bg-green-50 p-4 border-t border-green-100">
         <h4 class="font-medium text-sawit-green mb-3">Kinerja Bulan Ini</h4>
         <div class="grid grid-cols-2 gap-4">
           <div class="bg-white p-3 rounded-lg shadow-sm text-center">
-            <div class="text-2xl font-bold text-sawit-green">453</div>
+            <div id="profile-stat-bunches" class="text-2xl font-bold text-sawit-green">453</div>
             <div class="text-xs text-gray-600">Total Tandan</div>
           </div>
           <div class="bg-white p-3 rounded-lg shadow-sm text-center">
-            <div class="text-2xl font-bold text-sawit-green">21</div>
+            <div id="profile-stat-days" class="text-2xl font-bold text-sawit-green">21</div>
             <div class="text-xs text-gray-600">Hari Kerja</div>
           </div>
         </div>
       </div>
     </div>
     
-    <!-- Action Buttons - Only Logout button now -->
-    <div class="mt-6">
+    <!-- Action Buttons -->
+    <div id="action-buttons-view" class="mt-6 space-y-3">
+      <button id="btn-edit-profile" class="w-full py-3 px-4 bg-white border border-sawit-green text-sawit-green rounded-md hover:bg-gray-50 transition duration-200 flex items-center justify-center">
+        <i class="fas fa-user-edit mr-2"></i> Edit Profil
+      </button>
       <button id="btn-logout" class="w-full py-3 px-4 bg-white border border-red-300 text-red-600 rounded-md hover:bg-red-50 transition duration-200 flex items-center justify-center">
         <i class="fas fa-sign-out-alt mr-2"></i> Keluar
+      </button>
+    </div>
+    <div id="action-buttons-edit" class="mt-6 space-y-3 hidden">
+       <button id="btn-save-profile" class="w-full py-3 px-4 bg-sawit-green text-white rounded-md hover:bg-green-800 transition duration-200 flex items-center justify-center">
+        <i class="fas fa-save mr-2"></i> Simpan Perubahan
+      </button>
+      <button id="btn-cancel-edit" class="w-full py-3 px-4 bg-white border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition duration-200 flex items-center justify-center">
+        <i class="fas fa-times mr-2"></i> Batal
       </button>
     </div>
   </main>
@@ -124,7 +153,7 @@
       </div>
       
       <div class="flex flex-col md:flex-row gap-3">
-        <button id="btn-cancel" class="md:flex-1 py-2 px-4 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition duration-200">
+        <button id="btn-cancel-logout" class="md:flex-1 py-2 px-4 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition duration-200">
           Batal
         </button>
         
@@ -161,77 +190,185 @@
   <div class="h-14"></div>
 
   <script>
-    // Make sure the DOM is fully loaded before attaching events
-    document.addEventListener('DOMContentLoaded', function() {
-      console.log("DOM fully loaded");
+    let currentUserData = null; // Store current user data globally
+    const allBlocks = ['A1', 'A2', 'A3', 'B1', 'B2', 'B3', 'C1', 'C2', 'C3']; // Define available blocks
+
+    // Elements References
+    const profileNameView = document.getElementById('profile-name-view');
+    const profileNameEdit = document.getElementById('profile-name-edit');
+    const profileRoleView = document.getElementById('profile-role-view');
+    const profileId = document.getElementById('profile-id');
+    const profileBlocksView = document.getElementById('profile-blocks-view');
+    const profileBlocksEdit = document.getElementById('profile-blocks-edit');
+    const profilePhoneView = document.getElementById('profile-phone-view');
+    const profilePhoneEdit = document.getElementById('profile-phone-edit');
+    const profileStartDate = document.getElementById('profile-startdate');
+    const profileSupervisorView = document.getElementById('profile-supervisor-view');
+    const profileSupervisorEdit = document.getElementById('profile-supervisor-edit');
+    const profileStatBunches = document.getElementById('profile-stat-bunches');
+    const profileStatDays = document.getElementById('profile-stat-days');
+    
+    const actionButtonsView = document.getElementById('action-buttons-view');
+    const actionButtonsEdit = document.getElementById('action-buttons-edit');
+    const btnEditProfile = document.getElementById('btn-edit-profile');
+    const btnSaveProfile = document.getElementById('btn-save-profile');
+    const btnCancelEdit = document.getElementById('btn-cancel-edit');
+    const btnLogout = document.getElementById('btn-logout');
+    const btnCancelLogout = document.getElementById('btn-cancel-logout');
+    const btnConfirmLogout = document.getElementById('btn-confirm-logout');
+    const logoutModal = document.getElementById('logout-modal');
+
+    function populateProfileData(userData) {
+      currentUserData = userData; // Store for later use
       
-      // Check if user is logged in
+      profileNameView.textContent = userData.name;
+      profileRoleView.textContent = userData.role;
+      profileId.textContent = userData.id;
+      profileBlocksView.textContent = userData.blocks.join(', ');
+      profilePhoneView.textContent = userData.phone;
+      profileStartDate.textContent = userData.startDate;
+      profileSupervisorView.textContent = userData.supervisor;
+      profileStatBunches.textContent = userData.stats.totalBunches;
+      profileStatDays.textContent = userData.stats.workDays;
+
+      // Populate edit fields (initially hidden)
+      profileNameEdit.value = userData.name;
+      profilePhoneEdit.value = userData.phone;
+      profileSupervisorEdit.value = userData.supervisor;
+      
+      // Populate block checkboxes
+      profileBlocksEdit.innerHTML = ''; // Clear previous
+      allBlocks.forEach(block => {
+        const isChecked = userData.blocks.includes(block);
+        profileBlocksEdit.innerHTML += `
+          <div class="flex items-center">
+            <input type="checkbox" id="edit-blok-${block}" value="${block}" class="mr-1 text-sawit-green" ${isChecked ? 'checked' : ''}>
+            <label for="edit-blok-${block}" class="text-sm">${block}</label>
+          </div>
+        `;
+      });
+    }
+
+    function enterEditMode() {
+      // Hide view elements
+      profileNameView.classList.add('hidden');
+      profileBlocksView.classList.add('hidden');
+      profilePhoneView.classList.add('hidden');
+      profileSupervisorView.classList.add('hidden');
+      actionButtonsView.classList.add('hidden');
+
+      // Show edit elements
+      profileNameEdit.classList.remove('hidden');
+      profileBlocksEdit.classList.remove('hidden');
+      profilePhoneEdit.classList.remove('hidden');
+      profileSupervisorEdit.classList.remove('hidden');
+      actionButtonsEdit.classList.remove('hidden');
+    }
+
+    function exitEditMode(save) {
+      if (save) {
+        // Get updated values
+        const newName = profileNameEdit.value;
+        const newPhone = profilePhoneEdit.value;
+        const newSupervisor = profileSupervisorEdit.value;
+        const newBlocks = [];
+        profileBlocksEdit.querySelectorAll('input[type="checkbox"]:checked').forEach(cb => {
+          newBlocks.push(cb.value);
+        });
+        
+        // Update currentUserData object
+        currentUserData.name = newName;
+        currentUserData.phone = newPhone;
+        currentUserData.supervisor = newSupervisor;
+        currentUserData.blocks = newBlocks;
+
+        // Save to localStorage (both current user and user list)
+        localStorage.setItem('sawit_user', JSON.stringify(currentUserData));
+        
+        let users = JSON.parse(localStorage.getItem('sawit_users') || '[]');
+        const userIndex = users.findIndex(u => u.id === currentUserData.id);
+        if (userIndex !== -1) {
+          users[userIndex] = currentUserData;
+          localStorage.setItem('sawit_users', JSON.stringify(users));
+        }
+        
+        // Update view elements
+        populateProfileData(currentUserData); 
+      } else {
+         // Reset edit fields to original values if canceling
+         profileNameEdit.value = currentUserData.name;
+         profilePhoneEdit.value = currentUserData.phone;
+         profileSupervisorEdit.value = currentUserData.supervisor;
+         // Re-check original blocks
+         profileBlocksEdit.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+             cb.checked = currentUserData.blocks.includes(cb.value);
+         });
+      }
+
+      // Hide edit elements
+      profileNameEdit.classList.add('hidden');
+      profileBlocksEdit.classList.add('hidden');
+      profilePhoneEdit.classList.add('hidden');
+      profileSupervisorEdit.classList.add('hidden');
+      actionButtonsEdit.classList.add('hidden');
+
+      // Show view elements
+      profileNameView.classList.remove('hidden');
+      profileBlocksView.classList.remove('hidden');
+      profilePhoneView.classList.remove('hidden');
+      profileSupervisorView.classList.remove('hidden');
+      actionButtonsView.classList.remove('hidden');
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
       const userData = JSON.parse(localStorage.getItem('sawit_user'));
       if (!userData) {
-        window.location.href = 'index.html'; // Redirect to login if not logged in
+        window.location.href = 'index.html'; 
         return;
       }
-      
-      // Populate profile with user data
-      document.querySelector('.bg-sawit-green h3').textContent = userData.name;
-      document.querySelector('.bg-sawit-green p').textContent = userData.role;
-      
-      document.querySelectorAll('.w-2/3.font-medium')[0].textContent = userData.id;
-      document.querySelectorAll('.w-2/3.font-medium')[1].textContent = userData.blocks.join(', ');
-      document.querySelectorAll('.w-2/3.font-medium')[2].textContent = userData.phone;
-      document.querySelectorAll('.w-2/3.font-medium')[3].textContent = userData.startDate;
-      document.querySelectorAll('.w-2/3.font-medium')[4].textContent = userData.supervisor;
-      
-      // Populate stats
-      document.querySelectorAll('.bg-white .text-2xl')[0].textContent = userData.stats.totalBunches;
-      document.querySelectorAll('.bg-white .text-2xl')[1].textContent = userData.stats.workDays;
-      
-      // Add direct click handlers for all buttons
-      setupLogoutFunctionality();
+      populateProfileData(userData);
+      setupEventListeners();
     });
 
-    function setupLogoutFunctionality() {
-      console.log("Setting up logout functionality");
+    function setupEventListeners() {
+      // Edit Profile Button
+      if (btnEditProfile) {
+        btnEditProfile.onclick = enterEditMode;
+      }
       
-      // Logout button
-      const logoutBtn = document.getElementById('btn-logout');
-      console.log("Logout button:", logoutBtn);
+      // Save Profile Button
+      if (btnSaveProfile) {
+        btnSaveProfile.onclick = () => exitEditMode(true);
+      }
       
-      if (logoutBtn) {
-        logoutBtn.onclick = function() {
-          console.log("Logout button clicked");
-          document.getElementById('logout-modal').classList.remove('hidden');
+      // Cancel Edit Button
+      if (btnCancelEdit) {
+        btnCancelEdit.onclick = () => exitEditMode(false);
+      }
+
+      // Logout Functionality
+      if (btnLogout) {
+        btnLogout.onclick = function() {
+          if (logoutModal) logoutModal.classList.remove('hidden');
         };
       }
       
-      // Cancel button
-      const cancelBtn = document.getElementById('btn-cancel');
-      if (cancelBtn) {
-        cancelBtn.onclick = function() {
-          console.log("Cancel button clicked");
-          document.getElementById('logout-modal').classList.add('hidden');
+      if (btnCancelLogout) {
+        btnCancelLogout.onclick = function() {
+           if (logoutModal) logoutModal.classList.add('hidden');
         };
       }
       
-      // Confirm logout button
-      const confirmBtn = document.getElementById('btn-confirm-logout');
-      if (confirmBtn) {
-        confirmBtn.onclick = function() {
-          console.log("Confirm logout clicked");
-          // Clear user data
+      if (btnConfirmLogout) {
+        btnConfirmLogout.onclick = function() {
           localStorage.removeItem('sawit_user');
-          
-          // Force the navigation
           document.location.href = 'index.html';
         };
       }
     }
-
-    // Backup direct binding in case DOMContentLoaded doesn't trigger correctly
-    window.onload = function() {
-      console.log("Window loaded");
-      setupLogoutFunctionality();
-    };
+    
+    // Backup event listener setup
+    window.onload = setupEventListeners;
   </script>
 </body>
 </html>
